@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>3D Test</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div id="game" class="hidden">
+    <div id="stats"></div>
+    <div id="crosshair">+</div>
+  </div>
+  <div id="menu" class="menu">
+    <h1>Game Title Here</h1>
+    <button onclick="playGame()">Play</button>
+  </div>
+  <div id="paused" class="menu hidden">
+    <h1>Game Paused</h1>
+    <button onclick="resumeGame()">Resume</button>
+    <button onclick="screenshot()">Screenshot</button>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
