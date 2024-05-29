@@ -1,6 +1,7 @@
 * {
   user-select: none;
   font-family: monospace;
+  margin: 0;
 }
 
 body {
@@ -70,4 +71,8 @@ button {
   font-size: 20px;
   cursor: pointer;
   margin: 5px;
+}
+
+#settings {
+  background: black;
 }

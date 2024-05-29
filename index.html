@@ -14,13 +14,49 @@
   <div id="menu" class="menu">
     <h1>Game Title Here</h1>
     <button onclick="playGame()">Play</button>
+    <button onclick="openSettings()">Settings</button>
   </div>
   <div id="paused" class="menu hidden">
     <h1>Game Paused</h1>
     <button onclick="resumeGame()">Resume</button>
     <button onclick="screenshot()">Screenshot</button>
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <div id="settings" class="menu hidden">
+    <div>
+      <h1>Settings</h1>
+      <h2 class="setting" onclick="changeSetting('forward', 'key')">Forward: <span id="forward">w</span></h2>
+      <h2 class="setting" onclick="changeSetting('backward', 'key')">Backward: <span id="backward">s</span></h2>
+      <h2 class="setting" onclick="changeSetting('left', 'key')">Left: <span id="left">a</span></h2>
+      <h2 class="setting" onclick="changeSetting('right', 'key')">Right: <span id="right">d</span></h2>
+      <h2 class="setting" onclick="changeSetting('camUp', 'key')">Look up: <span id="camUp">ArrowUp</span></h2>
+      <h2 class="setting" onclick="changeSetting('camDown', 'key')">Look down: <span id="camDown">ArrowDown</span></h2>
+      <h2 class="setting" onclick="changeSetting('camLeft', 'key')">Look left: <span id="camLeft">ArrowLeft</span></h2>
+      <h2 class="setting" onclick="changeSetting('camRight', 'key')">Look right: <span id="camRight">ArrowRight</span>
+      </h2>
+      <h2 class="setting" onclick="changeSetting('sprint', 'key')">Sprint: <span id="sprint">x</span></h2>
+      <h2 class="setting" onclick="changeSetting('reset', 'key')">Reset: <span id="reset">r</span></h2>
+      <h2 class="setting" onclick="changeSetting('screenie', 'key')">Screenshot: <span id="screenie">p</span></h2>
+      <h2 class="setting" onclick="changeSetting('sensitivity', 'slider')">Sensitivity: <span
+          id="sensitivity">100</span>
+      </h2>
+      <h2 class="setting" onclick="changeSetting('noMouse', 'toggle')">Keyboard only controls: <span
+          id="noMouse">false</span></h2>
+      <h2 class="setting" onclick="changeSetting('flyMode', 'toggle')">Fly mode: <span id="flyMode">true</span></h2>
+    </div>
+    <div>
+      <button onclick="closeSettings()">Save and Close</button>
+      <button onclick="resetSettings()">Reset</button>
+    </div>
+  </div>
+  <div id="keySelect" class="menu hidden">
+    <h1>Type any key to continue</h1>
+  </div>
+  <div id="sliderSelector" class="menu hidden">
+    <h1>Change your sensitivity and then press done</h1>
+    <input type="range" min="1" max="150" value="100" id="slider">
+    <button onclick="changeSensitivity()">Done</button>
+  </div>
+  <script src=" https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="script.js"></script>
 </body>
 

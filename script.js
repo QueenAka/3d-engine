@@ -1,40 +1,41 @@
-let settings = {
+const dsettings = {
   flyMode: true,
-  controls: {
-    forward: 'w',
-    backward: 's',
-    left: 'a',
-    right: 'd',
-    jump: ' ',
-    sprint: 'x',
-    reset: 'r',
-    screenie: 'p',
-    camUp: 'ArrowUp',
-    camDown: 'ArrowDown',
-    camLeft: "ArrowLeft",
-    camRight: "ArrowRight",
-    noMouse: false,
-    sensitivity: 500,
-  }
+  forward: 'w',
+  backward: 's',
+  left: 'a',
+  right: 'd',
+  sprint: 'x',
+  reset: 'r',
+  screenie: 'p',
+  camUp: 'ArrowUp',
+  camDown: 'ArrowDown',
+  camLeft: "ArrowLeft",
+  camRight: "ArrowRight",
+  noMouse: false,
+  sensitivity: 500,
+}
+
+let settings = dsettings;
+if (localStorage.getItem("settings")) {
+  settings = JSON.parse(localStorage.getItem("settings"));
 }
 
 let canvas = null;
+let keys = {};
+
+document.addEventListener('keydown', (e) => {
+  keys[e.key] = true;
+});
+
+document.addEventListener('keyup', (e) => {
+  delete keys[e.key];
+});
 
 function playGame() {
   document.getElementById("menu").remove();
   document.getElementById("game").classList.remove("hidden");
-  const keys = {};
   let mouseX = 0;
   let mouseY = 0;
-
-  document.addEventListener('keydown', (e) => {
-    keys[e.key] = true;
-  });
-
-  document.addEventListener('keyup', (e) => {
-    delete keys[e.key];
-  });
-
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.z = 5;
@@ -57,8 +58,8 @@ function playGame() {
   }
 
   document.addEventListener('pointerlockchange', () => {
-    const con = settings.controls;
-    const sens = con.sensitivity
+    const con = settings;
+    const sens = settings.sensitivity;
     if (document.pointerLockElement === canvas) {
       function getMousePosition(e) {
         const { movementX, movementY } = e;
@@ -78,7 +79,6 @@ function playGame() {
   });
 
 
-
   const geometry = new THREE.BoxGeometry(1, 1, 1);
   const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
   const cube = new THREE.Mesh(geometry, material);
@@ -89,7 +89,7 @@ function playGame() {
   function animate() {
     requestAnimationFrame(animate);
     frame++
-    const con = settings.controls
+    const con = settings
     const statsDiv = document.getElementById("stats");
     statsDiv.innerHTML = `[${Math.round(camera.position.x)}, ${Math.round(camera.position.y)}, ${Math.round(camera.position.z)}] | ${fps}`;
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -147,4 +147,60 @@ function resumeGame() {
 function screenshot() {
   const base64image = canvas.toDataURL("image/png");
   window.open(base64image);
+}
+
+function isEmpty(obj) {
+  for (const prop in obj) {
+    if (Object.hasOwn(obj, prop)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function openSettings() {
+  document.getElementById("settings").classList.remove("hidden");
+}
+
+function changeSetting(setting, type) {
+  if (type == "key") {
+    document.getElementById("keySelect").classList.remove("hidden");
+    keys = {};
+    let newKeys = [];
+    let loopdieloop = setInterval(() => {
+      if (!isEmpty(keys)) {
+        clearInterval(loopdieloop);
+        document.getElementById("keySelect").classList.add("hidden");
+        for (const key in keys) {
+          newKeys.push(key);
+        }
+        settings[setting] = newKeys[0];
+        document.getElementById(setting).innerHTML = newKeys[0];
+      }
+    })
+  } else if (type == "toggle") {
+    settings[setting] = !settings[setting];
+    document.getElementById(setting).innerHTML = settings[setting];
+  } else if (type == "slider") {
+    document.getElementById("sliderSelector").classList.remove("hidden");
+    let slider = document.getElementById("slider");
+    slider.value = settings[setting];
+  }
+}
+
+function changeSensitivity() {
+  settings.sensitivity = document.getElementById("slider").value;
+  document.getElementById("sensitivity").innerHTML = settings.sensitivity;
+  document.getElementById("sliderSelector").classList.add("hidden");
+}
+
+function closeSettings() {
+  document.getElementById("settings").classList.add("hidden");
+  localStorage.setItem("settings", JSON.stringify(settings));
+}
+
+function resetSettings() {
+  localStorage.removeItem("settings");
+  window.location.reload();
 }
